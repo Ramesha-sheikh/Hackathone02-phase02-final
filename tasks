@@ -1,0 +1,60 @@
+# Frontend UI Theme Tasks
+
+## Task List
+
+### Layout Updates
+- [x] Add theme images to main layout
+- [x] Update background styling
+- [x] Ensure proper image scaling
+
+### Login Page Updates
+- [x] Apply theme to login form
+- [x] Add background image
+- [x] Maintain form functionality
+
+### Signup Page Updates
+- [x] Apply theme to signup form
+- [x] Add background image
+- [x] Maintain form functionality
+
+### Dashboard Updates
+- [x] Apply theme to dashboard
+- [x] Add background elements
+- [x] Maintain task functionality
+
+### Home Page Updates
+- [x] Apply theme to home page
+- [x] Use specified color scheme
+- [x] Apply neon effects
+
+### About Page Updates
+- [x] Apply theme to about page
+- [x] Use specified color scheme
+- [x] Apply neon effects
+
+### Hover Effects Updates
+- [x] Add hover effects from pink to blue on buttons
+- [x] Add scale animations on hover
+- [x] Apply to all interactive elements
+
+### Homepage Background Image
+- [x] Use 1dd4d2ce-52de-46df-a70d-fdec6d62ee7e.jpg as background
+- [x] Add blur effect to background image
+- [x] Maintain readability with overlay
+
+### Component Updates
+- [x] Update Navbar with theme (already had a beautiful theme)
+- [x] Update Footer with theme
+- [x] Ensure consistency
+
+### Color Scheme Implementation
+- [x] Update Tailwind config with specified colors
+- [x] Update globals.css with color variables
+- [x] Apply color scheme to all components
+- [x] Use CSS variables for light/dark mode
+- [x] Apply neon effects as specified
+
+### Testing
+- [x] Verify responsive design
+- [x] Test functionality
+- [x] Validate accessibility
