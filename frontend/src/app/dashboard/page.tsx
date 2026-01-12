@@ -8,10 +8,10 @@ import { taskApi } from "../../lib/api-client";
 import Sidebar from "../../components/Sidebar";
 
 interface Todo {
-  id: string;
+  id: number; // Backend uses integer IDs for tasks
   title: string;
   description: string | null;
-  completed: boolean;
+  status: string; // Backend uses status field instead of completed boolean
 }
 
 export default function DashboardPage() {
@@ -34,8 +34,15 @@ export default function DashboardPage() {
   const fetchTodos = async () => {
     setError("");
     try {
-      const data: Todo[] = await taskApi.getTasks();
-      setTodos(data);
+      const data: any[] = await taskApi.getTasks(); // Get raw data
+      // Map backend response to frontend Todo interface
+      const mappedTodos: Todo[] = data.map(todo => ({
+        id: todo.id,
+        title: todo.title,
+        description: todo.description,
+        status: todo.status || 'pending' // Default to 'pending' if status is not provided
+      }));
+      setTodos(mappedTodos);
     } catch (err: any) {
       setError(err.message);
     }
@@ -58,10 +65,10 @@ export default function DashboardPage() {
   const handleUpdateTodo = async (todo: Todo) => {
     setError("");
     try {
-      await taskApi.updateTask(Number(todo.id), {
+      await taskApi.updateTask(todo.id, {
         title: todo.title,
         description: todo.description,
-        completed: todo.completed
+        status: todo.status
       });
       setEditingTodo(null);
       fetchTodos();
@@ -70,20 +77,25 @@ export default function DashboardPage() {
     }
   };
 
-  const toggleTodoComplete = async (id: string) => {
+  const toggleTodoComplete = async (id: number) => {
     setError("");
     try {
-      await taskApi.toggleTaskComplete(Number(id));
-      fetchTodos();
+      // Toggle the status between 'pending' and 'completed'
+      const currentTodo = todos.find(todo => todo.id === id);
+      if (currentTodo) {
+        const newStatus = currentTodo.status === 'completed' ? 'pending' : 'completed';
+        await taskApi.updateTaskStatus(id, newStatus);
+        fetchTodos();
+      }
     } catch (err: any) {
       setError(err.message);
     }
   };
 
-  const handleDeleteTodo = async (id: string) => {
+  const handleDeleteTodo = async (id: number) => {
     setError("");
     try {
-      await taskApi.deleteTask(Number(id));
+      await taskApi.deleteTask(id);
       fetchTodos();
     } catch (err: any) {
       setError(err.message);
@@ -198,14 +210,17 @@ export default function DashboardPage() {
                             rows={2}
                           />
                           <div className="flex items-center space-x-4 mt-2">
-                            <input
-                              type="checkbox"
-                              checked={editingTodo.completed}
-                              onChange={(e) =>
-                                setEditingTodo({ ...editingTodo, completed: e.target.checked })
-                              }
-                              className="h-5 w-5 text-[color:var(--neon-pink)] rounded focus:ring-[color:var(--neon-pink)]"
-                            />
+                            <label className="flex items-center space-x-2">
+                              <input
+                                type="checkbox"
+                                checked={editingTodo.status === 'completed'}
+                                onChange={(e) =>
+                                  setEditingTodo({ ...editingTodo, status: e.target.checked ? 'completed' : 'pending' })
+                                }
+                                className="h-5 w-5 text-[color:var(--neon-pink)] rounded focus:ring-[color:var(--neon-pink)]"
+                              />
+                              <span>Completed</span>
+                            </label>
                             <button
                               onClick={() => handleUpdateTodo(editingTodo)}
                               className="neon-button-primary px-4 py-2 text-sm"
@@ -224,11 +239,11 @@ export default function DashboardPage() {
                         <div className="flex-grow">
                           <div className="flex items-start justify-between">
                             <div className="flex-grow">
-                              <h3 className={`text-lg font-semibold ${todo.completed ? "line-through text-[color:var(--text-secondary)]/60" : "text-[color:var(--text-primary)]"}`}>
+                              <h3 className={`text-lg font-semibold ${todo.status === 'completed' ? "line-through text-[color:var(--text-secondary)]/60" : "text-[color:var(--text-primary)]"}`}>
                                 {todo.title}
                               </h3>
                               {todo.description && (
-                                <p className={`text-[color:var(--text-secondary)] mt-1 ${todo.completed ? "line-through" : ""}`}>
+                                <p className={`text-[color:var(--text-secondary)] mt-1 ${todo.status === 'completed' ? "line-through" : ""}`}>
                                   {todo.description}
                                 </p>
                               )}
@@ -236,7 +251,7 @@ export default function DashboardPage() {
                             <div className="flex items-center space-x-3 ml-4">
                               <input
                                 type="checkbox"
-                                checked={todo.completed}
+                                checked={todo.status === 'completed'}
                                 onChange={() => toggleTodoComplete(todo.id)}
                                 className="h-5 w-5 text-[color:var(--neon-pink)] rounded focus:ring-[color:var(--neon-pink)]"
                               />

@@ -17,7 +17,9 @@ class TaskCreate(BaseModel):
     description: str | None = None
 
 class TaskUpdate(BaseModel):
-    status: str
+    title: str | None = None
+    description: str | None = None
+    status: str | None = None
 
 @router.post("/", response_model=Task)
 def create_task(task: TaskCreate, user_id: UUID = Depends(verify_jwt_token), session: Session = Depends(get_session)):
@@ -44,7 +46,15 @@ def update_task(task_id: int, task_update: TaskUpdate, user_id: UUID = Depends(v
     task = session.get(Task, task_id)
     if not task or task.user_id != user_id:
         raise HTTPException(status_code=404, detail="Task not found")
-    task.status = task_update.status
+
+    # Update fields if they are provided
+    if task_update.title is not None:
+        task.title = task_update.title
+    if task_update.description is not None:
+        task.description = task_update.description
+    if task_update.status is not None:
+        task.status = task_update.status
+
     session.add(task)
     session.commit()
     session.refresh(task)

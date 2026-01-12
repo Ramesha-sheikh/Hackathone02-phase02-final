@@ -4,8 +4,8 @@
 // Functions that work with our backend API
 // These functions call the backend auth endpoints directly
 export const customSignIn = async (email: string, password: string) => {
-  // Call the backend auth endpoint directly
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/signin`, {
+  // Call the backend auth endpoint directly (with /api prefix)
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/signin`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -28,8 +28,8 @@ export const customSignIn = async (email: string, password: string) => {
 };
 
 export const customSignUp = async (email: string, password: string) => {
-  // Call the backend auth endpoint directly
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/signup`, {
+  // Call the backend auth endpoint directly (with /api prefix)
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/signup`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

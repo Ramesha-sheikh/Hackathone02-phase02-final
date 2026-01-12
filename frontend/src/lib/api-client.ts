@@ -1,6 +1,6 @@
 import { getAuthToken } from './auth-client';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
 
 interface ApiOptions extends RequestInit {
   url: string;
@@ -102,11 +102,11 @@ export const apiClient = new ApiClient(API_BASE_URL);
 
 // Convenience functions for specific endpoints
 export const taskApi = {
-  getTasks: () => apiClient.get<any[]>('/tasks'),
+  getTasks: () => apiClient.get<any[]>('/api/tasks'),
   createTask: (taskData: { title: string; description?: string }) =>
-    apiClient.post<any>('/tasks', taskData),
-  updateTask: (id: number, taskData: { title?: string; description?: string; status?: string; completed?: boolean }) =>
-    apiClient.put<any>(`/tasks/${id}`, taskData),
-  deleteTask: (id: number) => apiClient.delete<any>(`/tasks/${id}`),
-  toggleTaskComplete: (id: number) => apiClient.patch<any>(`/tasks/${id}/complete`)
+    apiClient.post<any>('/api/tasks', taskData),
+  updateTask: (id: number, taskData: { title?: string; description?: string; status?: string }) =>
+    apiClient.put<any>(`/api/tasks/${id}`, taskData),
+  deleteTask: (id: number) => apiClient.delete<any>(`/api/tasks/${id}`),
+  updateTaskStatus: (id: number, status: string) => apiClient.put<any>(`/api/tasks/${id}`, { status })
 };
