@@ -1,6 +1,6 @@
 import { getAuthToken } from './auth-client';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://rameesha12123214-todophase02-backend.hf.space/';
 
 interface ApiOptions extends RequestInit {
   url: string;
