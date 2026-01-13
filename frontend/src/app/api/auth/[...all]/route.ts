@@ -4,9 +4,6 @@
 
 import { NextRequest } from "next/server";
 
-// Configure this route for static export compatibility
-export const dynamic = "force-dynamic"; // This route makes external API calls, so it can't be static
-
 // Proxy route to forward auth requests to backend
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
