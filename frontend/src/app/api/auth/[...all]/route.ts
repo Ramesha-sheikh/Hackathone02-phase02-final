@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
   const params = url.pathname.replace('/api/auth/', '');
 
   // Forward to backend auth
-  const backendResponse = await fetch(`https://rameesha12123214-todophase02-backend.hf.space/auth/${params}`, {
+  const backendResponse = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/${params}`, {
     method: 'GET',
     headers: {
       ...request.headers,
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
   const params = url.pathname.replace('/api/auth/', '');
 
   // Forward to backend auth
-  const backendResponse = await fetch(`https://rameesha12123214-todophase02-backend.hf.space/auth/${params}`, {
+  const backendResponse = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/${params}`, {
     method: 'POST',
     headers: {
       ...request.headers,
