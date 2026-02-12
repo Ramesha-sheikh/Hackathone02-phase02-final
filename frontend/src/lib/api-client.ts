@@ -105,7 +105,7 @@ export const taskApi = {
   getTasks: () => apiClient.get<any[]>('/api/tasks'),
   createTask: (taskData: { title: string; description?: string }) =>
     apiClient.post<any>('/api/tasks', taskData),
-  updateTask: (id: number, taskData: { title?: string; description?: string; status?: string }) =>
+  updateTask: (id: number, taskData: { title?: string; description?: string; status?: string; completed?: boolean }) =>
     apiClient.put<any>(`/api/tasks/${id}`, taskData),
   deleteTask: (id: number) => apiClient.delete<any>(`/api/tasks/${id}`),
   updateTaskStatus: (id: number, status: string) => apiClient.put<any>(`/api/tasks/${id}`, { status }),
